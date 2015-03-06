@@ -48,7 +48,7 @@ directive('pdfviewer', function() {
 			};
 
 			$scope.renderPage = function(num, callback) {
-				num = undefined ? 1: parseInt(num, 10);
+				num = num === undefined ? 1: parseInt(num, 10);
 				var scale = $scope.scale === undefined ? 1.0 : parseFloat($scope.scale);
 
 				$scope.pdfDoc.getPage(num).then(function(page) {

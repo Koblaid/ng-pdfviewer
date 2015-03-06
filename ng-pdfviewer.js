@@ -16,6 +16,7 @@ directive('pdfviewer', function() {
 		template: '<canvas></canvas>',
 		scope: {
 			onPageLoad: '&',
+			onPdfLoad: '&',
 			loadProgress: '&',
 			src: '=',
 			pageNum: '=',
@@ -34,6 +35,7 @@ directive('pdfviewer', function() {
 			$scope.loadPDF = function(path) {
 				PDFJS.getDocument(path, null, null, $scope.documentProgress).then(function(_pdfDoc) {
 					$scope.pdfDoc = _pdfDoc;
+					$scope.onPdfLoad({pageCount: $scope.pdfDoc.numPages});
 					$scope.renderPage($scope.pageNum, function(success) {
 						if ($scope.loadProgress) {
 							$scope.loadProgress({state: "finished", loaded: 0, total: 0});
@@ -120,7 +122,7 @@ directive('pdfviewer', function() {
 				}
 			});
 
-                        scope.$watch('pageNum', function(v) {
+			scope.$watch('pageNum', function(v) {
 				if (scope.pdfDoc !== null) {
 					scope.renderPage(scope.pageNum);
 				}
